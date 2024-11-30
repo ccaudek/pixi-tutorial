@@ -1,0 +1,24 @@
+[project]
+name = "pixi tutorial"
+description = "Progetto di data analysis con R"
+authors = ["Corrado Caudek <corrado.caudek@unifi.it>"]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-64", "win-64"]
+
+[target.osx.tasks]
+rstudio = "open -a rstudio"
+
+[dependencies]
+r-base = ">=4.3,<5"
+r-tidyverse = "*"
+r-rio= "*"
+r-knitr = "*"
+r-rmarkdown = "*"
+r-here = "*"
+
+[tasks]
+clean = "rm -rf reports/figures/* data/processed/*"
+data-prep = "Rscript src/data_cleaning.R"
+analysis = "Rscript src/analysis.R"
+report = "Rscript -e 'rmarkdown::render(\"reports/report.Rmd\")'"
+all = { depends-on = ["clean", "data-prep", "analysis", "report"] }
